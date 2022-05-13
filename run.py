@@ -1,5 +1,7 @@
 from types import SimpleNamespace
 
+import flask
+
 from Analytics.Visualization import graphs
 from Analytics.clustering.kmeans import KMeans
 from Analytics.clustering.kprototypes import KPrototypes
@@ -8,6 +10,7 @@ from Analytics.clustering.model import controller
 from Analytics.clustering.model import KMeans_Wrapper
 
 import os
+import requests
 import json
 from flask import Flask, flash, request, redirect, url_for, render_template, jsonify
 from werkzeug.utils import secure_filename
@@ -84,10 +87,14 @@ def upload_file():
             except:
                 model = 0
                 print('error!')
+            print(request.headers)
 
             json_res = controller.fit_data('/' + filename, k, iteration, model)
 
-            return json_res
+            resp.headers['Access-Control-Allow-Credentials'] = 'true'
+            resp.headers['Access-Control-Allow-Origin'] = 'http://localhost:8001'
+
+            return resp
     return 'Oh no'
 
 
