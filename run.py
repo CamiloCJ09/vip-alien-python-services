@@ -10,7 +10,7 @@ from Analytics.clustering.model import controller
 from Analytics.clustering.model import KMeans_Wrapper
 
 import os
-import requests
+#import requests
 import json
 from flask import Flask, flash, request, redirect, url_for, render_template, jsonify
 from werkzeug.utils import secure_filename
@@ -87,10 +87,11 @@ def upload_file():
             except:
                 model = 0
                 print('error!')
-            print(request.headers)
+            #print(request.headers)
 
             json_res = controller.fit_data('/' + filename, k, iteration, model)
 
+            resp = flask.Response(json_res)
             resp.headers['Access-Control-Allow-Credentials'] = 'true'
             resp.headers['Access-Control-Allow-Origin'] = 'http://localhost:8001'
 
